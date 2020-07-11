@@ -1,0 +1,52 @@
+timestamp: 2020-03-31T16:13:00.118720
+CREATE TABLE "auth_user"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "username" CHAR(512) UNIQUE,
+    "email" CHAR(512) UNIQUE,
+    "password" CHAR(512),
+    "first_name" CHAR(512),
+    "last_name" CHAR(512),
+    "sso_id" CHAR(512),
+    "action_token" CHAR(512)
+);
+success!
+timestamp: 2020-03-31T16:13:00.121094
+CREATE TABLE "auth_user_tag_groups"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "path" CHAR(512),
+    "record_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  
+);
+success!
+timestamp: 2020-03-31T16:13:00.123688
+CREATE TABLE "feed_item"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "body" TEXT,
+    "created_on" TIMESTAMP,
+    "created_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "modified_on" TIMESTAMP,
+    "modified_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "is_active" CHAR(1)
+);
+success!
+timestamp: 2020-03-31T16:13:00.125630
+CREATE TABLE "item_like"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "item_id" INTEGER REFERENCES "feed_item" ("id") ON DELETE CASCADE  ,
+    "created_on" TIMESTAMP,
+    "created_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "modified_on" TIMESTAMP,
+    "modified_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "is_active" CHAR(1)
+);
+success!
+timestamp: 2020-03-31T16:13:00.127283
+CREATE TABLE "friend_request"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "from_user" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "to_user" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE  ,
+    "status" CHAR(512)
+);
+success!
+timestamp: 2020-05-03T19:22:50.791243
+ALTER TABLE "auth_user" ADD "last_password_change" TIMESTAMP;
+success!
